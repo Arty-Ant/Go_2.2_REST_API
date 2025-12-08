@@ -1,0 +1,9 @@
+{
+ "name": "Petr",
+ "science_id": 8237917,
+ "is_working": true,
+ "university": {
+  "name": "BMSTU",
+  "city": "Москва"
+ }
+}
