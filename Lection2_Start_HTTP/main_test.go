@@ -24,6 +24,6 @@ func Test_GetGreet(t *testing.T) {
 
 	resCode := res.Result().StatusCode
 	if resCode != 200 {
-		t.Fatalf("Expected 200, but got %d", exp, resCode)
+		t.Fatalf("Expected 200, but got %d", resCode)
 	}
 }
