@@ -30,12 +30,47 @@ func getBooks(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(books)
 }
 
+func getBookById(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	fmt.Println("now handling URL Path:", r.URL.Path)
+	id := r.PathValue("id")
+	for _, book := range books {
+		if book.ID == id {
+			json.NewEncoder(w).Encode(book)
+			return
+		}
+	}
+	http.Error(w, "Book not found", http.StatusNotFound)
+}
+
+func createBooks(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+	}
+	w.Header().Set("Content-Type", "application/json")
+	fmt.Println("now handling URL Path:", r.URL.Path)
+	var newBook Book
+	err := json.NewDecoder(r.Body).Decode(&newBook)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	books = append(books, newBook)
+	json.NewEncoder(w).Encode(newBook)
+}
+
 func main() {
 
 	//явно создаём router
-	mux := http.NewServeMux()
+	mux := http.NewServeMux() //Multiplexer
+
+	// Добавляем маршруты к роутеру
 	mux.HandleFunc("GET /books/", getBooks)
+	mux.HandleFunc("GET /books/{id}", getBookById)
+	mux.HandleFunc("POST /books/", createBooks)
 
 	fmt.Println("Start local web server...")
+
+	// Передаём в ListenAndServe наш роутер (mux)
 	log.Fatal(http.ListenAndServe("localhost"+port, mux)) // Запускаем веб сервер для "слушанья" (Завёрнутый в отслеживание ошибки)
 }
