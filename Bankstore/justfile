@@ -7,3 +7,19 @@ pg_start:
 # Stop postgresql service
 pg_stop:
     docker compose stop
+
+# Create bankdb
+createdb:
+    docker compose exec db createdb --username=$POSTGRES_USER --owner=$POSTGRES_USER bankdb
+
+# Drop bankdb
+dropdb:
+    docker compose exec db dropdb --username=$POSTGRES_USER bankdb
+
+# Apply migration to create table
+migrateup:
+    migrate -path db/migrations -database "postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@localhost:5432/bankdb?sslmode=disable" -verbose up
+
+# Apply migration to delete(drop) table
+migratedown:
+    migrate -path db/migrations -database "postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@localhost:5432/bankdb?sslmode=disable" -verbose down
