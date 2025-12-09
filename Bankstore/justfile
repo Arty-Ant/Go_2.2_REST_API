@@ -1,0 +1,9 @@
+set dotenv-load
+
+# Start postgresql service
+pg_start:
+    docker compose start
+
+# Stop postgresql service
+pg_stop:
+    docker compose stop

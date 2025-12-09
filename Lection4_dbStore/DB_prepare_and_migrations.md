@@ -17,29 +17,35 @@ sudo sh get-docker.sh
 ```
 sudo apt install just
 ```
+Добавить расширение в VSCode:
+`nefrob.vscode-just-syntax`
 
 
 # 2. Start
 
-Создать директорию и файл  
+Создать необходимые директории и файлы    
 
 - directory: `db/migrations`
 - file : `docker-compose.yml`
+- file : `.env`
+- file : `justfile`
 
-Команты:
+**Команды:**
+```bash
 go mod init Bankstore
 cd ..
 go work use Bankstore/
 cd Bankstore
 mkdir -p db/migrations
 touch docker-compose.yaml
-touch justfile //команды для Just
-touch .env //конфигурация
-touch .env.example для отправки в репозиторий чтоб не попал по git ignore
+touch justfile # команды для Just
+touch .env # конфигурация для БД, этот файл не попадает в репозиторий
+touch .env.example # Необязательно. Копия файла .env, для отправки в репозиторий
+```
 
 ### Folder and file structures:
 ```
-bankstore/
+Bankstore/
 
 ❯ tree   
 .
@@ -47,7 +53,7 @@ bankstore/
 ├── .env
 ├── db
 │   └── migrations/
-└── docker-compose.yml
+└── docker-compose.yaml
 ```
 
 
@@ -63,7 +69,7 @@ POSTGRES_DB=bankdb
 ```
 
 
-`docker-compose.yml` файл: 
+`docker-compose.yaml` файл: 
 
 ```
 services:
@@ -89,11 +95,12 @@ volumes:
   bankdb-data:
 ```
 
-## Запуск `docker compose`
+## Создание и Запуск `docker compose`
 ```
 docker compose up -d
 ```
-
+Для остановки использовать команду docker stop
+А для запуска docker start
 
 ### Check container
 
@@ -106,6 +113,19 @@ docker ps
 - либо изменить права доступа `sudo chmod 666 /var/run/docker.sock`
 - либо добавить `sudo` вначале каждой команды
 
+### Настройка justfile для быстрых команд
+
+```
+set dotenv-load
+
+# Start postgresql service
+pg_start:
+    docker compose start
+
+# Stop postgresql service
+pg_stop:
+    docker compose stop
+```
 
 ### Check database 
 ```
