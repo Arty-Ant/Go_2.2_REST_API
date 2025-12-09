@@ -46,7 +46,7 @@ func deleteAllBooks(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	books = nil
 	json.NewEncoder(w).Encode(books)
-	fmt.Fprintf(w, "<h1>All books has been deleted</h1>")
+	fmt.Fprintf(w, "<h1>All books has been deleted</h1>") //надо прописать в json формате, а не в html
 }
 
 func deleteBookByID(w http.ResponseWriter, r *http.Request) {
