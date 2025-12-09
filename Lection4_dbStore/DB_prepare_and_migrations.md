@@ -26,7 +26,16 @@ sudo apt install just
 - directory: `db/migrations`
 - file : `docker-compose.yml`
 
-
+Команты:
+go mod init Bankstore
+cd ..
+go work use Bankstore/
+cd Bankstore
+mkdir -p db/migrations
+touch docker-compose.yaml
+touch justfile //команды для Just
+touch .env //конфигурация
+touch .env.example для отправки в репозиторий чтоб не попал по git ignore
 
 ### Folder and file structures:
 ```
