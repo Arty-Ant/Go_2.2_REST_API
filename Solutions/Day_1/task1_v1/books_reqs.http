@@ -1,0 +1,36 @@
+@hostname = http://127.0.0.1
+@port = 3000
+
+### Get all books
+GET {{hostname}}:{{port}}/books/ HTTP/1.1
+
+### Get book by id, send right id
+GET {{hostname}}:{{port}}/books/1/ HTTP/1.1
+
+### Get book by id, send wrong id
+GET {{hostname}}:{{port}}/books/11 HTTP/1.1
+
+### Create new book
+POST {{hostname}}:{{port}}/books/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "id": "4",
+    "title": "new good book",
+    "author": "new author"
+}
+
+### Update book book by id
+PUT {{hostname}}:{{port}}/books/1/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "title": "updated book",
+    "author": "updated author"
+}
+
+### Delete all books
+DELETE  {{hostname}}:{{port}}/books/ HTTP/1.1
+
+### Delete book by id
+DELETE  {{hostname}}:{{port}}/books/2/ HTTP/1.1
