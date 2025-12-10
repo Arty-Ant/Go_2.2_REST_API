@@ -265,3 +265,10 @@ sqlc:
     sqlc generate
 
 Потом в папке Bankstore запустить программу go mod tidy
+
+Такая запись в just позволяет запускать сразу все тесты в папке благодаря ...
+```
+# Testing code
+test:
+    go test -v -timeout 180s ./...
+```
