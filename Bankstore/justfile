@@ -23,3 +23,7 @@ migrateup:
 # Apply migration to delete(drop) table
 migratedown:
     migrate -path db/migrations -database "postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@localhost:5432/bankdb?sslmode=disable" -verbose down
+
+# Generate sqlc code
+sqlc:
+    sqlc generate

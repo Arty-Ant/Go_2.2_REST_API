@@ -195,4 +195,41 @@ migrate -path db/migrations -database "postgres://$POSTGRES_USER:$POSTGRES_PASSW
 
 # 4. CRUD
 
+Генератор кода для перевода кода с Go на SQL и наоборот
 [Add SQLC library](https://github.com/sqlc-dev/sqlc/blob/main/docs/overview/install.md)
+После установки надо создать в Bankstore файл sqlc.yaml скопривать из документации код и поправить его под свои настройки
+Пример
+```
+version: "2"
+cloud:
+  # Replace <PROJECT_ID> with your project ID from the sqlc Cloud dashboard
+  project: "<PROJECT_ID>"
+sql:
+  - engine: "postgresql"
+    queries: "./db/queries"
+    schema: "./db/migrations"
+    gen:
+      go:
+        package: "db"
+        out: "./db/sqlc"
+        sql_package: "pgx/v5"
+        emit_json_tags: true
+        emit_prepared_queries: false
+        emit_exact_table_names: false
+```
+Подробнее в разделе конфигурации/go в документации на сайте SQLC
+
+Создать папки в Bankstore - sqlc и queries.
+В папке queries создать файл account.sql
+
+Пример
+```
+-- name: CreateAccount :one
+INSERT INTO account (
+    owner,
+    balance,
+    currency
+) VALUES (
+    $1, $2, $3
+) RETURNING *;
+```
