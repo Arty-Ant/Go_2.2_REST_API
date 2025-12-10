@@ -1,13 +1,12 @@
 -- name: CreateEntries :one
 INSERT INTO entries (
     account_id,
-    amount,
-    created_at
+    amount
 ) VALUES (
-    $1, $2, $3
+    $1, $2
 ) RETURNING *;
 
--- name: GetEntries :one
+-- name: GetEntry :one
 SELECT * 
 FROM entries
 WHERE id=$1
@@ -20,12 +19,12 @@ ORDER BY id
 LIMIT $1
 OFFSET $2; --смещение
 
--- name: UpdateEntries :one
+-- name: UpdateEntry :one
 UPDATE entries
-SET amount=$1
-WHERE id=$2
+SET amount=$2
+WHERE id=$1
 RETURNING *;
 
--- name: DeleteEntries :exec
+-- name: DeleteEntry :exec
 DELETE FROM entries
 WHERE id = $1;

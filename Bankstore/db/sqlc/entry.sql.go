@@ -7,28 +7,24 @@ package db
 
 import (
 	"context"
-
-	"github.com/jackc/pgx/v5/pgtype"
 )
 
 const createEntries = `-- name: CreateEntries :one
 INSERT INTO entries (
     account_id,
-    amount,
-    created_at
+    amount
 ) VALUES (
-    $1, $2, $3
+    $1, $2
 ) RETURNING id, account_id, amount, created_at
 `
 
 type CreateEntriesParams struct {
-	AccountID int64              `json:"account_id"`
-	Amount    int64              `json:"amount"`
-	CreatedAt pgtype.Timestamptz `json:"created_at"`
+	AccountID int64 `json:"account_id"`
+	Amount    int64 `json:"amount"`
 }
 
 func (q *Queries) CreateEntries(ctx context.Context, arg CreateEntriesParams) (Entry, error) {
-	row := q.db.QueryRow(ctx, createEntries, arg.AccountID, arg.Amount, arg.CreatedAt)
+	row := q.db.QueryRow(ctx, createEntries, arg.AccountID, arg.Amount)
 	var i Entry
 	err := row.Scan(
 		&i.ID,
@@ -39,25 +35,25 @@ func (q *Queries) CreateEntries(ctx context.Context, arg CreateEntriesParams) (E
 	return i, err
 }
 
-const deleteEntries = `-- name: DeleteEntries :exec
+const deleteEntry = `-- name: DeleteEntry :exec
 DELETE FROM entries
 WHERE id = $1
 `
 
-func (q *Queries) DeleteEntries(ctx context.Context, id int64) error {
-	_, err := q.db.Exec(ctx, deleteEntries, id)
+func (q *Queries) DeleteEntry(ctx context.Context, id int64) error {
+	_, err := q.db.Exec(ctx, deleteEntry, id)
 	return err
 }
 
-const getEntries = `-- name: GetEntries :one
+const getEntry = `-- name: GetEntry :one
 SELECT id, account_id, amount, created_at 
 FROM entries
 WHERE id=$1
 LIMIT 1
 `
 
-func (q *Queries) GetEntries(ctx context.Context, id int64) (Entry, error) {
-	row := q.db.QueryRow(ctx, getEntries, id)
+func (q *Queries) GetEntry(ctx context.Context, id int64) (Entry, error) {
+	row := q.db.QueryRow(ctx, getEntry, id)
 	var i Entry
 	err := row.Scan(
 		&i.ID,
@@ -106,22 +102,22 @@ func (q *Queries) ListEntries(ctx context.Context, arg ListEntriesParams) ([]Ent
 	return items, nil
 }
 
-const updateEntries = `-- name: UpdateEntries :one
+const updateEntry = `-- name: UpdateEntry :one
 
 UPDATE entries
-SET amount=$1
-WHERE id=$2
+SET amount=$2
+WHERE id=$1
 RETURNING id, account_id, amount, created_at
 `
 
-type UpdateEntriesParams struct {
-	Amount int64 `json:"amount"`
+type UpdateEntryParams struct {
 	ID     int64 `json:"id"`
+	Amount int64 `json:"amount"`
 }
 
 // смещение
-func (q *Queries) UpdateEntries(ctx context.Context, arg UpdateEntriesParams) (Entry, error) {
-	row := q.db.QueryRow(ctx, updateEntries, arg.Amount, arg.ID)
+func (q *Queries) UpdateEntry(ctx context.Context, arg UpdateEntryParams) (Entry, error) {
+	row := q.db.QueryRow(ctx, updateEntry, arg.ID, arg.Amount)
 	var i Entry
 	err := row.Scan(
 		&i.ID,
