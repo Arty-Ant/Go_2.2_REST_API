@@ -69,3 +69,23 @@ func createRandomAccount(t *testing.T) Account {
 
 	return account
 }
+
+func TestGetAccount(t *testing.T) {
+	// Сначала создаём тестовый аккаунт
+	acc1 := createRandomAccount(t)
+
+	// Вызываем тестируемый метод
+	acc2, err := testQueries.GetAccount(ctx, acc1.ID)
+
+	// Проверки
+	require.NoError(t, err)
+	require.NotEmpty(t, acc2)
+
+	require.Equal(t, acc1.ID, acc2.ID)
+	require.Equal(t, acc1.Owner, acc2.Owner)
+	require.Equal(t, acc1.Balance, acc2.Balance)
+	require.Equal(t, acc1.Currency, acc2.Currency)
+
+	// created_at должен совпадать с точностью до секунд (обычно этого достаточно)
+	require.WithinDuration(t, acc1.CreatedAt, acc2.CreatedAt, 0)
+}
