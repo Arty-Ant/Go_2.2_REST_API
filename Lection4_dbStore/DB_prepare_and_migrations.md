@@ -219,7 +219,7 @@ sql:
 ```
 Подробнее в разделе конфигурации/go в документации на сайте SQLC
 
-Создать папки в Bankstore - sqlc и queries.
+Создать папки в Bankstore/db - sqlc и queries.
 В папке queries создать файл account.sql
 
 Пример
@@ -233,3 +233,12 @@ INSERT INTO account (
     $1, $2, $3
 ) RETURNING *;
 ```
+Потом запустить команду 
+sqlc generate
+
+Её можно прописать в just
+# Generate sqlc code
+sqlc:
+    sqlc generate
+
+Потом в папке Bankstore запустить программу go mod tidy
