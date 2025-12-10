@@ -85,7 +85,7 @@ services:
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U app_user -d ${POSTGRES_USER}"]
+      test: ["CMD-SHELL", "pg_isready -U app_user -d ${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -220,18 +220,41 @@ sql:
 Подробнее в разделе конфигурации/go в документации на сайте SQLC
 
 Создать папки в Bankstore/db - sqlc и queries.
-В папке queries создать файл account.sql
+В папке queries создать файл account.sql и прописать в нём код на языке SQL с флагами *-- name: CreateAccount :one* из документации SQLC
 
 Пример
 ```
 -- name: CreateAccount :one
-INSERT INTO account (
+INSERT INTO accounts (
     owner,
     balance,
     currency
 ) VALUES (
     $1, $2, $3
 ) RETURNING *;
+
+-- name: GetAccount :one
+SELECT * 
+FROM accounts
+WHERE id=$1
+LIMIT 1;
+
+-- name: ListAccounts :many
+SELECT *
+FROM accounts
+ORDER BY id
+LIMIT $1
+OFFSET $2; --смещение
+
+-- name: UpdateAccount :one
+UPDATE accounts
+SET balance=$1
+WHERE id=$2
+RETURNING *;
+
+-- name: DeleteAccount :exec
+DELETE FROM accounts
+WHERE id = $1;
 ```
 Потом запустить команду 
 sqlc generate
