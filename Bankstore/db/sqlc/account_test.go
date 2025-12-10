@@ -10,9 +10,10 @@ import (
 	"os"
 	"testing"
 
+	"Bankstore/utils"
+
 	"github.com/jackc/pgx/v5"
 	"github.com/stretchr/testify/require"
-	"Bankstore/utils"
 )
 
 const (
@@ -42,11 +43,15 @@ func TestMain(m *testing.M) {
 }
 
 func TestCreateAccount(t *testing.T) {
+	createRandomAccount(t)
+}
+
+func createRandomAccount(t *testing.T) Account {
 	ra := utils.RandomAccount()
 	arg := CreateAccountParams{
-		Owner:    ra.Owner,
-		//Balance: utils.RandomInt(0, 1000),
-		Balance:  ra.Balance,
+		Owner:   ra.Owner,
+		Balance: utils.RandomInt(0, 1000),
+		//Balance:  ra.Balance,
 		Currency: Currency(ra.Currency),
 	}
 	account, err := testQueries.CreateAccount(ctx, arg)
@@ -54,4 +59,13 @@ func TestCreateAccount(t *testing.T) {
 	// Две проверки на результат работы CreateAccount
 	require.NoError(t, err)
 	require.NotEmpty(t, account)
+
+	require.Equal(t, arg.Owner, account.Owner)
+	require.Equal(t, arg.Balance, account.Balance)
+	require.Equal(t, arg.Currency, account.Currency)
+
+	require.NotZero(t, account.ID)
+	require.NotZero(t, account.CreatedAt)
+
+	return account
 }
