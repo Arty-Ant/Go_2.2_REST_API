@@ -90,3 +90,17 @@ func TestGetAccount(t *testing.T) {
 	//require.WithinDuration(t, acc1.CreatedAt, acc2.CreatedAt, 0)
 
 }
+
+func TestDeleteAccount(t *testing.T) {
+
+	// Создание тестового аккаунта
+	acc3 := createRandomAccount(t)
+
+	// Вызов тестируемого метода
+	err := testQueries.DeleteAccount(err)
+
+	// Проверки
+	require.Error(t, err)
+	require.NotEmpty(t, acc3)
+
+}
