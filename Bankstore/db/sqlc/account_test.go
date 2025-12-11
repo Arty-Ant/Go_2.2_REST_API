@@ -100,7 +100,7 @@ func TestDeleteAccount(t *testing.T) {
 	err := testQueries.DeleteAccount(ctx, acc3.ID)
 
 	// Проверки
-	require.Error(t, err)
+	require.NoError(t, err)
 	require.Empty(t, acc3)
 
 }
