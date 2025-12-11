@@ -9,6 +9,7 @@ import (
 	"log"
 	"os"
 	"testing"
+	"time"
 
 	"Bankstore/utils"
 
@@ -87,20 +88,50 @@ func TestGetAccount(t *testing.T) {
 	require.Equal(t, acc1.Balance, acc2.Balance)
 	require.Equal(t, acc1.Currency, acc2.Currency)
 
-	//require.WithinDuration(t, acc1.CreatedAt, acc2.CreatedAt, 0)
+	require.WithinDuration(t, acc1.CreatedAt.Time, acc2.CreatedAt.Time, time.Second)
 
 }
 
 func TestDeleteAccount(t *testing.T) {
+	account1 := createRandomAccount(t)
+	// Delete created account
+	err := testQueries.DeleteAccount(ctx, account1.ID)
+	require.NoError(t, err)
+	account2, err := testQueries.GetAccount(ctx, account1.ID)
+	require.Error(t, err)
+	require.Empty(t, account2)
+	// проверка на тип ошибки(нуль строк было обработано)
+	require.EqualError(t, err, pgx.ErrNoRows.Error())
+}
+func TestListAccounts(t *testing.T) {
+	for range 10 {
+		createRandomAccount(t)
+	}
+	arg := ListAccountsParams{
+		Limit:  8,
+		Offset: 15,
+	}
+	accounts, err := testQueries.ListAccounts(ctx, arg)
+	require.NoError(t, err)
+	require.Len(t, accounts, 8)
+	for _, acc := range accounts {
+		require.NotZero(t, acc)
+	}
+}
 
-	// Создание тестового аккаунта
-	acc3 := createRandomAccount(t)
-
-	// Вызов тестируемого метода
-	err := testQueries.DeleteAccount(ctx, acc3.ID)
-
-	// Проверки
-	require.NotEqual(t, acc3, err)
-	require.Zero(t, err)
-
+func TestUpdateAccount(t *testing.T) {
+	account1 := createRandomAccount(t)
+	arg := UpdateAccountParams{
+		ID:      account1.ID,
+		Balance: utils.RandomInt(0, 1000),
+	}
+	account2, err := testQueries.UpdateAccount(ctx, arg)
+	require.NoError(t, err)
+	require.NotEmpty(t, account2)
+	// test all fields
+	require.Equal(t, account1.ID, account2.ID)
+	require.Equal(t, account1.Owner, account2.Owner)
+	require.Equal(t, arg.Balance, account2.Balance)
+	require.Equal(t, account1.Currency, account2.Currency)
+	require.WithinDuration(t, account1.CreatedAt.Time, account2.CreatedAt.Time, time.Second)
 }
