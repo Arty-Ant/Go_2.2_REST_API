@@ -101,6 +101,6 @@ func TestDeleteAccount(t *testing.T) {
 
 	// Проверки
 	require.NotEqual(t, acc3, err)
-	//require.Zero(t, acc3)
+	require.Zero(t, err)
 
 }
