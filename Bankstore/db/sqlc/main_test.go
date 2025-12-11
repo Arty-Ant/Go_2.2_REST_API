@@ -14,7 +14,7 @@ const (
 )
 
 // Глобальный контекст для работы с БД и тестами
-var ctx = context.Background()
+//var ctx = context.Background()
 
 // Декларация переменной
 var testQueries *Queries

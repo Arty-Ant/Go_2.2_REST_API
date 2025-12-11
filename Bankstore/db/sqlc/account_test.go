@@ -5,6 +5,7 @@
 package db
 
 import (
+	"context"
 	"testing"
 	"time"
 
@@ -26,7 +27,7 @@ func createRandomAccount(t *testing.T) Account {
 		//Balance:  ra.Balance,
 		Currency: Currency(ra.Currency),
 	}
-	account, err := testQueries.CreateAccount(ctx, arg)
+	account, err := testQueries.CreateAccount(context.Background(), arg)
 
 	// Две проверки на результат работы CreateAccount
 	require.NoError(t, err)
@@ -48,7 +49,7 @@ func TestGetAccount(t *testing.T) {
 	acc1 := createRandomAccount(t)
 
 	// Вызов тестируемого метода
-	acc2, err := testQueries.GetAccount(ctx, acc1.ID)
+	acc2, err := testQueries.GetAccount(context.Background(), acc1.ID)
 
 	// Проверки
 	require.NoError(t, err)
@@ -66,9 +67,9 @@ func TestGetAccount(t *testing.T) {
 func TestDeleteAccount(t *testing.T) {
 	account1 := createRandomAccount(t)
 	// Delete created account
-	err := testQueries.DeleteAccount(ctx, account1.ID)
+	err := testQueries.DeleteAccount(context.Background(), account1.ID)
 	require.NoError(t, err)
-	account2, err := testQueries.GetAccount(ctx, account1.ID)
+	account2, err := testQueries.GetAccount(context.Background(), account1.ID)
 	require.Error(t, err)
 	require.Empty(t, account2)
 	// проверка на тип ошибки(нуль строк было обработано)
@@ -82,7 +83,7 @@ func TestListAccounts(t *testing.T) {
 		Limit:  8,
 		Offset: 15,
 	}
-	accounts, err := testQueries.ListAccounts(ctx, arg)
+	accounts, err := testQueries.ListAccounts(context.Background(), arg)
 	require.NoError(t, err)
 	require.Len(t, accounts, 8)
 	for _, acc := range accounts {
@@ -96,7 +97,7 @@ func TestUpdateAccount(t *testing.T) {
 		ID:      account1.ID,
 		Balance: utils.RandomInt(0, 1000),
 	}
-	account2, err := testQueries.UpdateAccount(ctx, arg)
+	account2, err := testQueries.UpdateAccount(context.Background(), arg)
 	require.NoError(t, err)
 	require.NotEmpty(t, account2)
 	// test all fields
