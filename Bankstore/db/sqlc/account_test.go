@@ -97,7 +97,7 @@ func TestDeleteAccount(t *testing.T) {
 	acc3 := createRandomAccount(t)
 
 	// Вызов тестируемого метода
-	err := testQueries.DeleteAccount(err)
+	err := testQueries.DeleteAccount(ctx, acc3.ID)
 
 	// Проверки
 	require.Error(t, err)
