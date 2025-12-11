@@ -101,6 +101,6 @@ func TestDeleteAccount(t *testing.T) {
 
 	// Проверки
 	require.NoError(t, err)
-	require.Empty(t, acc3)
+	require.Zero(t, acc3)
 
 }
