@@ -1,5 +1,5 @@
--- name: CreateEntries :one
-INSERT INTO entry (
+-- name: CreateEntry :one
+INSERT INTO entries (
     account_id,
     amount
 ) VALUES (

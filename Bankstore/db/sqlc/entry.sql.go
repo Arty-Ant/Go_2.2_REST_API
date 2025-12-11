@@ -9,7 +9,7 @@ import (
 	"context"
 )
 
-const createEntry = `-- name: CreateEntries :one
+const createEntry = `-- name: CreateEntry :one
 INSERT INTO entries (
     account_id,
     amount
