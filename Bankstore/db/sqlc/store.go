@@ -59,7 +59,7 @@ func (store *Store) TransferTx(ctx context.Context, arg TransferTxParams) (Trans
 	err := store.exectTx(ctx, func(q *Queries) error {
 		//Step 1. Create Transfer record
 		var err error
-		result.Transfer, err = q.CreateTransfer(ctx, CreateTransferParams(arg))
+		result.Transfer, err  = q.CreateTransfer(ctx, CreateTransferParams(arg))
 		if err != nil {
 			return err
 		}

@@ -22,7 +22,8 @@ var testDB *pgxpool.Pool
 
 func TestMain(m *testing.M) {
 	// Соединение с БД
-	testDB, err := pgxpool.New(context.Background(), dbSource)
+	var err error
+	testDB, err = pgxpool.New(context.Background(), dbSource)
 	if err != nil {
 		log.Fatal("can not connect to db", err)
 	}
