@@ -18,7 +18,7 @@ func RandomInt(min, max int64) int64 {
 }
 
 type RandomAccountParams struct {
-	Owner    string `faker:"last_name"`
+	Owner    string `faker:"first_name"`
 	Balance  int64
 	Currency string `faker:"oneof: USD, EUR"`
 }
@@ -30,4 +30,20 @@ func RandomAccount() RandomAccountParams {
 		log.Fatal(err)
 	}
 	return rap
+}
+
+type RandomUserParams struct {
+	Username       string `faker:"username"`
+	HashedPassword string `faker:"password`
+	FullName       string `faker:"name"`
+	Email          string `faker:"email"`
+}
+
+func RandomUser() RandomUserParams {
+	rup := RandomUserParams{}
+	err := faker.FakeData(&rup)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return rup
 }

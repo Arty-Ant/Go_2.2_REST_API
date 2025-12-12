@@ -24,13 +24,23 @@ createdb:
 dropdb:
     docker compose exec db dropdb --username=$POSTGRES_USER bankdb
 
-# Apply migration to create table
+# Apply migration to create table, all migration
 migrateup:
     migrate -path db/migrations -database "postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@localhost:5432/bankdb?sslmode=disable" -verbose up
 
-# Apply migration to delete(drop) table
+# Apply migration to delete(drop) table, all migration
 migratedown:
     migrate -path db/migrations -database "postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@localhost:5432/bankdb?sslmode=disable" -verbose down
+
+# Apply migration to create "users" table, only one migration
+migrateup1:
+    migrate -path db/migrations -database "postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@localhost:5432/bankdb?sslmode=disable" -verbose up 1
+
+# Apply migration to delete(drop) "users" table, only one migration
+migratedown1:
+    migrate -path db/migrations -database "postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@localhost:5432/bankdb?sslmode=disable" -verbose down 1
+
+
 
 # Generate sqlc code
 sqlc:
@@ -43,3 +53,5 @@ test:
 # Start backend server
 start:
     go run main.go
+
+# 
