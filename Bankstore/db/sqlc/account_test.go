@@ -80,12 +80,12 @@ func TestListAccounts(t *testing.T) {
 		createRandomAccount(t)
 	}
 	arg := ListAccountsParams{
-		Limit:  8,
-		Offset: 15,
+		Limit:  10,
+		Offset: 0,
 	}
 	accounts, err := testQueries.ListAccounts(context.Background(), arg)
 	require.NoError(t, err)
-	require.Len(t, accounts, 8)
+	require.Len(t, accounts, 10)
 	for _, acc := range accounts {
 		require.NotZero(t, acc)
 	}
