@@ -34,7 +34,7 @@ func RandomAccount() RandomAccountParams {
 
 type RandomUserParams struct {
 	Username       string `faker:"username"`
-	HashedPassword string `faker:"password`
+	HashedPassword string `faker:"password"`
 	FullName       string `faker:"name"`
 	Email          string `faker:"email"`
 }
