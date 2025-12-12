@@ -26,11 +26,6 @@ type CreateAccountRequest struct {
 	Currency db.Currency `json:"currency" binding:"required,oneof=USD EUR"`
 }
 
-func (server *Server) CreateAccount(ctx *gin.Context) {
-	// TODO
-
-}
-
 // errorResponse return gin.H -> map[string]interface{}
 func errorResponse(err error) gin.H {
 	return gin.H{"error": err.Error()}

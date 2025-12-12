@@ -5,7 +5,6 @@ import (
 	db "Bankstore/db/sqlc"
 	"context"
 	"log"
-	"testing"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -15,7 +14,7 @@ const (
 	serverAddress = "0.0.0.0:8080"
 )
 
-func TestMain(m *testing.M) {
+func main() {
 	// Соединение с БД
 	pool, err := pgxpool.New(context.Background(), dbSource)
 	if err != nil {
