@@ -8,7 +8,7 @@ POST {{hostname}}:{{port}}/accounts
 Content-Type: "application/json"
 
 {
-    "owner": "Anna",
+    "owner": "AnnaSTDNOW",
     "currency": "USD"
 }
 
@@ -24,6 +24,17 @@ Accept: application/json
 ### Delete account by id
 DELETE {{hostname}}:{{port}}/accounts/11
 Accept: application/json
+
+### Create new user
+POST {{hostname}}:{{port}}/users
+Content-Type: application/json
+
+{
+    "username": "AnnaSTDNOW",
+    "password": "password1",
+    "full_name": "Anna Ivanova",
+    "email": "anna@gmail.com"
+}
 
 ### Create new account via curl
 
