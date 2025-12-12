@@ -17,10 +17,13 @@ Content-Type: "application/json"
 GET {{hostname}}:{{port}}/accounts/1 HTTP/1.1
 Accept: application/json
 
-### Get accounts
+### Get accounts list
 GET {{hostname}}:{{port}}/accounts/?page_id=5&page_size=5
 Accept: application/json
 
+### Delete account by id
+DELETE {{hostname}}:{{port}}/accounts/11
+Accept: application/json
 
 ### Create new account via curl
 

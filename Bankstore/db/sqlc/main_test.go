@@ -6,12 +6,14 @@ import (
 	"os"
 	"testing"
 
+	"Bankstore/utils"
+
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-const (
-	dbSource = "postgresql://app_user:pswd@localhost:5432/bankdb?sslmode=disable"
-)
+// const (
+// 	dbSource = "postgresql://app_user:pswd@localhost:5432/bankdb?sslmode=disable"
+// )
 
 // Глобальный контекст для работы с БД и тестами
 //var ctx = context.Background()
@@ -21,9 +23,13 @@ var testQueries *Queries
 var testDB *pgxpool.Pool
 
 func TestMain(m *testing.M) {
+	// Загружаем настройки из файла app.env
+	config, err := utils.LoadConfig("../..") // "." - current directory
+	if err != nil {
+		log.Fatal("can not read config file", err)
+	}
 	// Соединение с БД
-	var err error
-	testDB, err = pgxpool.New(context.Background(), dbSource)
+	testDB, err = pgxpool.New(context.Background(), config.DBSource)
 	if err != nil {
 		log.Fatal("can not connect to db", err)
 	}
