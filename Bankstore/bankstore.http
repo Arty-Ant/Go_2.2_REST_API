@@ -8,12 +8,23 @@ POST {{hostname}}:{{port}}/accounts
 Content-Type: "application/json"
 
 {
-    "owner": "Vasya",
+    "owner": "Anna",
     "currency": "USD"
 }
+
+### Get account by id
+
+GET {{hostname}}:{{port}}/accounts/1 HTTP/1.1
+Accept: application/json
+
+### Get accounts
+GET {{hostname}}:{{port}}/accounts/?page_id=5&page_size=5
+Accept: application/json
+
 
 ### Create new account via curl
 
 curl -X POST http://127.0.0.1:8080/accounts \
     -H "Content-Type: application/json" \
     -d '{"owner":"John","currency":"EUR"}'
+
